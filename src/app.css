@@ -1,0 +1,116 @@
+/* Theme — the switcher overwrites these three on :root at runtime. */
+:root {
+	--accent: #3498db;
+	--accent-2: #8e44ad;
+	--dark: #35424a;
+
+	--bg: #f4f4f4;
+	--surface: #ffffff;
+	--text: #333333;
+	--text-muted: #7f8c8d;
+	--heading: #2c3e50;
+	--border: #e4e6e8;
+
+	--sidebar-width: 340px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	font-family:
+		system-ui,
+		-apple-system,
+		'Segoe UI',
+		Arial,
+		sans-serif;
+	line-height: 1.65;
+	background-color: var(--bg);
+	color: var(--text);
+}
+
+h1,
+h2,
+h3,
+h4 {
+	color: var(--heading);
+	line-height: 1.25;
+}
+
+a {
+	color: var(--accent);
+}
+
+/* Layout shell — fixed sidebar, scrolling content */
+.shell {
+	display: grid;
+	grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+	min-height: 100vh;
+}
+
+.content {
+	padding: 4rem 3rem 5rem;
+	max-width: 900px;
+}
+
+.section + .section {
+	margin-top: 4.5rem;
+}
+
+.section-title {
+	font-size: 0.8rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--text-muted);
+	margin: 0 0 1.5rem;
+	padding-bottom: 0.75rem;
+	border-bottom: 1px solid var(--border);
+}
+
+/* Scroll reveal */
+.reveal {
+	opacity: 0;
+	transform: translateY(20px);
+	transition:
+		opacity 0.6s ease,
+		transform 0.6s ease;
+}
+
+.reveal.revealed {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	.reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+}
+
+@media (max-width: 900px) {
+	.shell {
+		grid-template-columns: 1fr;
+	}
+
+	.content {
+		padding: 2.5rem 1.5rem 4rem;
+	}
+
+	.section + .section {
+		margin-top: 3rem;
+	}
+}
