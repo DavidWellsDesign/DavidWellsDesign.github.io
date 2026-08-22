@@ -5,9 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>David Wells - Developer Portfolio</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        window.__THEMES = {
+            ocean:  { accent: '#3498db', accent2: '#8e44ad', dark: '#35424a' },
+            forest: { accent: '#16a085', accent2: '#27ae60', dark: '#1e3a34' },
+            sunset: { accent: '#e67e22', accent2: '#e74c3c', dark: '#4a2c2a' },
+            rose:   { accent: '#e84393', accent2: '#6c5ce7', dark: '#3a2e44' },
+            slate:  { accent: '#4a5568', accent2: '#718096', dark: '#1a202c' }
+        };
+        (function () {
+            var theme = window.__THEMES[localStorage.getItem('portfolio-theme')];
+            if (!theme) return;
+            var root = document.documentElement.style;
+            root.setProperty('--accent', theme.accent);
+            root.setProperty('--accent-2', theme.accent2);
+            root.setProperty('--dark', theme.dark);
+        })();
+    </script>
 </head>
 <body>
-    <header>
+    <nav class="site-nav">
+        <div class="container">
+            <a class="nav-brand" href="#home">David Wells</a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#portfolio">Portfolio</a>
+                <a href="#resume">Resume</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home">
         <div class="container">
             <h1>David Wells</h1>
             <p>Software Engineer</p>
@@ -18,19 +47,19 @@
         <div class="container">
             <h2>My Portfolio</h2>
             <div class="portfolio-grid">
-                <div class="portfolio-item">
+                <div class="portfolio-item reveal">
                     <img src="images/Screenshot 2024-10-07 at 13.16.34.png" alt="Voyage">
                     <h3>Voyage</h3>
                     <p>A 3D space exploration game developed in Unity.</p>
                     <a href="https://gamejolt.com/games/voyage/68864" class="btn">View Project on GameJolt</a>
                 </div>
-                <div class="portfolio-item">
+                <div class="portfolio-item reveal">
                     <img src="images/test_image_0.png" alt="Python Art Generator">
                     <h3>Python Art Generator</h3>
                     <p>A python script that generates art using configurable parameters.</p>
                     <a href="https://github.com/DavidWellsDesign/ArtGenerator" class="btn">View Project on GitHub</a>
                 </div>
-                <div class="portfolio-item">
+                <div class="portfolio-item reveal">
                     <img src="images/Cover_Image.png" alt="Sneaky Sprint">
                     <h3>Sneaky Sprint</h3>
                     <p>A fast-paced platformer game developed in Godot.</p>
@@ -47,7 +76,7 @@
             
             <div class="resume-section">
                 <h3>Employment History</h3>
-                <div class="job">
+                <div class="job reveal">
                     <h4>Visualfiles Developer</h4>
                     <p class="company">Judge & Priestley</p>
                     <p class="date">Febuary 2025 - January 2026</p>
@@ -57,7 +86,7 @@
                         <li>Developing and testing intergrations with the company's mobile application.</li>
                     </ul>
                 </div>
-                <div class="job">
+                <div class="job reveal">
                     <h4>Software Engineer</h4>
                     <p class="company">Horwich Farrelly</p>
                     <p class="date">June 2021 - August 2024</p>
@@ -70,7 +99,7 @@
                         <li>Underwent <b>Developing Microsoft Azure Solutions</b> training course provided by QA.</li>
                     </ul>
                 </div>
-                <div class="job">
+                <div class="job reveal">
                     <h4>Visualfiles Developer</h4>
                     <p class="company">Lester Aldridge</p>
                     <p class="date">April 2018 - June 2021</p>
@@ -86,12 +115,12 @@
             
             <div class="resume-section">
                 <h3>Education</h3>
-                <div class="education">
+                <div class="education reveal">
                     <h4>BA Digital Media Design</h4>
                     <p class="institution">Bournemouth University</p>
                     <p class="date">Graduated: 2016</p>
                 </div>
-                <div class="education">
+                <div class="education reveal">
                     <h4>Art & Design Foundation Diploma</h4>
                     <p class="institution">East Surrey College</p>
                     <p class="date">Completed: 2013</p>
@@ -101,45 +130,71 @@
             <div class="resume-section">
                 <h3>Skills</h3>
                 <div class="skills-grid">
-                    <div class="skill">
+                    <div class="skill reveal">
                         <span class="skill-name">Visualfiles</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 95%;"></div>
+                            <div class="skill-level" data-level="95"></div>
                         </div>
                     </div>
-                    <div class="skill">
+                    <div class="skill reveal">
                         <span class="skill-name">SQL</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 80%;"></div>
+                            <div class="skill-level" data-level="80"></div>
                         </div>
                     </div>
-                    <div class="skill">
+                    <div class="skill reveal">
                         <span class="skill-name">Python</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 60%;"></div>
+                            <div class="skill-level" data-level="60"></div>
                         </div>
                     </div>
-                    <div class="skill">
+                    <div class="skill reveal">
                         <span class="skill-name">Agile</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 75%;"></div>
+                            <div class="skill-level" data-level="75"></div>
                         </div>
                     </div>
-                    <div class="skill">
+                    <div class="skill reveal">
                         <span class="skill-name">Microsoft Azure</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 60%;"></div>
+                            <div class="skill-level" data-level="60"></div>
                         </div>
                     </div>
-                    <div class="skill">
+                    <div class="skill reveal">
                         <span class="skill-name">Microsoft Office</span>
                         <div class="skill-bar">
-                            <div class="skill-level" style="width: 90%;"></div>
+                            <div class="skill-level" data-level="90"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <p>Feel free to reach out or check out more of my work.</p>
+            <div class="contact-links">
+                <a href="https://github.com/DavidWellsDesign" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://www.linkedin.com/in/davidwellsdesign" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://doctorturnip.itch.io" target="_blank" rel="noopener">itch.io</a>
+            </div>
+            <p class="contact-footer-note">&copy; 2026 David Wells</p>
+        </div>
+    </section>
+
+    <div class="theme-switcher" id="themeSwitcher">
+        <button class="theme-toggle" id="themeToggle" aria-label="Change theme color" title="Change theme color">&#127912;</button>
+        <div class="theme-panel">
+            <button class="theme-swatch" data-theme="ocean" title="Ocean" style="background: linear-gradient(135deg, #3498db, #8e44ad);"></button>
+            <button class="theme-swatch" data-theme="forest" title="Forest" style="background: linear-gradient(135deg, #16a085, #27ae60);"></button>
+            <button class="theme-swatch" data-theme="sunset" title="Sunset" style="background: linear-gradient(135deg, #e67e22, #e74c3c);"></button>
+            <button class="theme-swatch" data-theme="rose" title="Rose" style="background: linear-gradient(135deg, #e84393, #6c5ce7);"></button>
+            <button class="theme-swatch" data-theme="slate" title="Slate" style="background: linear-gradient(135deg, #4a5568, #718096);"></button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

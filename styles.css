@@ -1,10 +1,24 @@
+/* Theme (adjust these, or use the color-swatch button in the corner) */
+:root {
+    --accent: #3498db;
+    --accent-2: #8e44ad;
+    --dark: #35424a;
+    --bg: #f4f4f4;
+    --bg-alt: #f9f9f9;
+}
+
 /* General styles */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 70px;
+}
+
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: var(--bg);
     color: #333;
 }
 
@@ -14,9 +28,49 @@ body {
     padding: 0 20px;
 }
 
+/* Nav styles */
+.site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.08);
+}
+
+.site-nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 20px;
+}
+
+.nav-brand {
+    font-weight: 700;
+    color: var(--dark);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: var(--dark);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+    color: var(--accent);
+}
+
 /* Header styles */
 header {
-    background: linear-gradient(45deg, #3498db, #8e44ad);
+    background: linear-gradient(45deg, var(--accent), var(--accent-2));
     color: #ffffff;
     padding: 3rem 0;
     text-align: center;
@@ -88,6 +142,7 @@ header p {
 
 .portfolio-item:hover {
     transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
 .portfolio-item img {
@@ -106,23 +161,23 @@ header p {
 
 .btn {
     display: inline-block;
-    background-color: #35424a;
+    background-color: var(--dark);
     color: #fff;
     padding: 0.5rem 1rem;
     text-decoration: none;
     border-radius: 3px;
     margin: 1rem;
-    transition: background-color 0.3s ease;
+    transition: filter 0.3s ease;
 }
 
 .btn:hover {
-    background-color: #2c3840;
+    filter: brightness(0.85);
 }
 
 /* Resume section styles */
 #resume {
     padding: 2rem 0;
-    background-color: #f9f9f9;
+    background-color: var(--bg-alt);
 }
 
 #resume h2 {
@@ -136,8 +191,8 @@ header p {
 }
 
 .resume-section h3 {
-    color: #35424a;
-    border-bottom: 2px solid #3498db;
+    color: var(--dark);
+    border-bottom: 2px solid var(--accent);
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
 }
@@ -154,7 +209,7 @@ header p {
 
 .company, .institution {
     font-weight: bold;
-    color: #3498db;
+    color: var(--accent);
 }
 
 .date {
@@ -193,5 +248,137 @@ header p {
 
 .skill-level {
     height: 100%;
-    background-color: #3498db;
+    width: 0;
+    background-color: var(--accent);
+    transition: width 1.2s ease;
+}
+
+/* Scroll-reveal animation */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .skill-level {
+        transition: none;
+    }
+}
+
+/* Theme switcher widget */
+.theme-switcher {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 200;
+}
+
+.theme-toggle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font-size: 1.4rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.08);
+}
+
+.theme-panel {
+    position: absolute;
+    right: 0;
+    bottom: 64px;
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.75rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.theme-switcher.open .theme-panel {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.theme-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    padding: 0;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease;
+}
+
+.theme-swatch:hover {
+    transform: scale(1.1);
+}
+
+.theme-swatch.active {
+    box-shadow: 0 0 0 2px var(--dark);
+}
+
+/* Contact section */
+#contact {
+    padding: 3rem 0;
+    background: var(--dark);
+    color: #fff;
+    text-align: center;
+}
+
+#contact h2 {
+    margin-bottom: 0.5rem;
+}
+
+.contact-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.contact-links a {
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    transition: background-color 0.2s ease;
+}
+
+.contact-links a:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.contact-footer-note {
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    opacity: 0.6;
 }
