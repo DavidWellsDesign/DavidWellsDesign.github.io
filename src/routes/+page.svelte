@@ -5,6 +5,7 @@
 	import { reveal, fillBar } from '$lib/actions/reveal.js';
 	import { projects, categories } from '$lib/data/projects.js';
 	import { jobs, education, skills, social } from '$lib/data/resume.js';
+	import { site } from '$lib/data/site.js';
 
 	let selected = $state('All');
 
@@ -20,11 +21,8 @@
 </script>
 
 <svelte:head>
-	<title>David Wells — Software Engineer</title>
-	<meta
-		name="description"
-		content="Portfolio of David Wells, a software engineer working across case management systems, automation, tooling and games."
-	/>
+	<title>{site.name} — {site.role}</title>
+	<meta name="description" content={site.description} />
 </svelte:head>
 
 <div class="shell">
@@ -125,7 +123,7 @@
 				</ul>
 			</div>
 
-			<p class="colophon">© {new Date().getFullYear()} David Wells</p>
+			<p class="colophon">© {new Date().getFullYear()} {site.name}</p>
 		</section>
 	</main>
 </div>

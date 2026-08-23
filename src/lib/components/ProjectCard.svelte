@@ -1,13 +1,37 @@
 <script>
 	import { base } from '$app/paths';
+	import { hasPublishedCaseStudy, hasDraftCaseStudy } from '$lib/data/case-studies/index.js';
+	import ProjectCover from './ProjectCover.svelte';
 
 	let { project } = $props();
+
+	const published = $derived(hasPublishedCaseStudy(project.slug));
+	const draft = $derived(hasDraftCaseStudy(project.slug));
+
+	// A card shows a case study link when one is live, or when it's still a
+	// draft and we're running `npm run dev`.
+	const study = $derived(published || draft);
+	const studyHref = $derived(`${base}/work/${project.slug}/`);
 </script>
 
 <article class="card">
-	<a class="thumb" href={project.link} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-		<img src="{base}{project.image}" alt="" loading="lazy" />
+	<a
+		class="thumb"
+		href={study ? studyHref : project.link}
+		target={study ? null : '_blank'}
+		rel={study ? null : 'noopener'}
+		tabindex="-1"
+		aria-hidden="true"
+	>
+		{#if project.image}
+			<img src="{base}{project.image}" alt="" loading="lazy" />
+		{:else}
+			<ProjectCover title={project.title} category={project.category} />
+		{/if}
 		<span class="category">{project.category}</span>
+		{#if draft}
+			<span class="draft">Draft</span>
+		{/if}
 	</a>
 
 	<div class="body">
@@ -20,10 +44,19 @@
 			{/each}
 		</ul>
 
-		<a class="link" href={project.link} target="_blank" rel="noopener">
-			{project.linkLabel}
-			<span aria-hidden="true">→</span>
-		</a>
+		<div class="actions">
+			{#if study}
+				<a class="link" href={studyHref}>
+					Read case study
+					<span aria-hidden="true">→</span>
+				</a>
+			{/if}
+
+			<a class="link" href={project.link} target="_blank" rel="noopener">
+				{project.linkLabel}
+				<span aria-hidden="true">↗</span>
+			</a>
+		</div>
 	</div>
 </article>
 
@@ -53,7 +86,8 @@
 		line-height: 0;
 	}
 
-	.thumb img {
+	.thumb img,
+	.thumb :global(.cover) {
 		width: 100%;
 		height: 170px;
 		object-fit: cover;
@@ -109,9 +143,17 @@
 		padding: 0.15rem 0.55rem;
 	}
 
-	.link {
+	.actions {
 		margin-top: 1.1rem;
-		align-self: flex-start;
+		padding-top: 0.9rem;
+		border-top: 1px solid var(--border);
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.35rem 1.25rem;
+	}
+
+	.link {
 		font-size: 0.88rem;
 		font-weight: 600;
 		color: var(--accent);
@@ -124,6 +166,20 @@
 	}
 
 	.link:hover span {
-		transform: translateX(4px);
+		transform: translateX(3px);
+	}
+
+	.draft {
+		position: absolute;
+		top: 0.75rem;
+		right: 0.75rem;
+		background: var(--dark);
+		color: #fff;
+		font-size: 0.68rem;
+		line-height: 1.5;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		padding: 0.2rem 0.55rem;
+		border-radius: 999px;
 	}
 </style>

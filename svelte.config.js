@@ -14,6 +14,15 @@ const config = {
 		// username.github.io/repo-name need a base path here.
 		paths: {
 			base: ''
+		},
+		prerender: {
+			handleUnseenRoutes: ({ routes, message }) => {
+				// While every case study is still a draft, /work/[slug] produces no
+				// pages. That's expected, not a build failure. Anything else that
+				// can't be reached still fails the build.
+				const unexpected = routes.filter((route) => route !== '/work/[slug]');
+				if (unexpected.length) throw new Error(message);
+			}
 		}
 	}
 };

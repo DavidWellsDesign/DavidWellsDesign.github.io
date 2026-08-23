@@ -1,6 +1,12 @@
 <script>
 	import { onMount } from 'svelte';
+	import { base } from '$app/paths';
 	import { social } from '$lib/data/resume.js';
+	import { site } from '$lib/data/site.js';
+
+	// 'home' renders the section nav with scroll-spy; 'detail' swaps it for a
+	// back link, since case study pages have no #work / #skills anchors.
+	let { variant = 'home' } = $props();
 
 	const links = [
 		{ id: 'work', label: 'Work' },
@@ -13,6 +19,8 @@
 	let active = $state('work');
 
 	onMount(() => {
+		if (variant !== 'home') return;
+
 		const sections = links
 			.map((link) => document.getElementById(link.id))
 			.filter(Boolean);
@@ -36,30 +44,44 @@
 <aside class="sidebar">
 	<div class="inner">
 		<div class="identity">
-			<h1>David Wells</h1>
-			<p class="role">Software Engineer</p>
-			<p class="bio">
-				Software engineer with a design background — building case management and
-				automation systems by day, games and generative art the rest of the time.
-			</p>
+			{#if variant === 'home'}
+				<h1>{site.name}</h1>
+			{:else}
+				<p class="name"><a href="{base}/">{site.name}</a></p>
+			{/if}
+			<p class="role">{site.role}</p>
+			<p class="bio">{site.bio}</p>
 		</div>
 
-		<nav aria-label="Sections">
-			<ul>
-				{#each links as link (link.id)}
+		{#if variant === 'home'}
+			<nav aria-label="Sections">
+				<ul>
+					{#each links as link (link.id)}
+						<li>
+							<a
+								href="#{link.id}"
+								class:active={active === link.id}
+								aria-current={active === link.id ? 'true' : undefined}
+							>
+								<span class="marker" aria-hidden="true"></span>
+								{link.label}
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</nav>
+		{:else}
+			<nav aria-label="Back">
+				<ul>
 					<li>
-						<a
-							href="#{link.id}"
-							class:active={active === link.id}
-							aria-current={active === link.id ? 'true' : undefined}
-						>
+						<a href="{base}/#work" class="active">
 							<span class="marker" aria-hidden="true"></span>
-							{link.label}
+							Back to work
 						</a>
 					</li>
-				{/each}
-			</ul>
-		</nav>
+				</ul>
+			</nav>
+		{/if}
 
 		<ul class="social">
 			{#each social as item (item.label)}
@@ -90,11 +112,23 @@
 		overflow-y: auto;
 	}
 
-	h1 {
+	h1,
+	.name {
 		color: #fff;
 		font-size: 2.2rem;
+		font-weight: 700;
 		margin: 0;
 		letter-spacing: -0.02em;
+		line-height: 1.25;
+	}
+
+	.name a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.name a:hover {
+		text-decoration: underline;
 	}
 
 	.role {
@@ -187,7 +221,8 @@
 			overflow: visible;
 		}
 
-		h1 {
+		h1,
+		.name {
 			font-size: 1.9rem;
 		}
 
