@@ -3,12 +3,15 @@
 	import { base } from '$app/paths';
 	import { social } from '$lib/data/resume.js';
 	import { site } from '$lib/data/site.js';
+	import { featured } from '$lib/data/featured.js';
 
 	// 'home' renders the section nav with scroll-spy; 'detail' swaps it for a
 	// back link, since case study pages have no #work / #skills anchors.
 	let { variant = 'home' } = $props();
 
 	const links = [
+		// Only listed while a featured project exists on the homepage.
+		...(featured ? [{ id: featured.id, label: featured.name }] : []),
 		{ id: 'work', label: 'Work' },
 		{ id: 'experience', label: 'Experience' },
 		{ id: 'education', label: 'Education' },
@@ -16,7 +19,7 @@
 		{ id: 'contact', label: 'Contact' }
 	];
 
-	let active = $state('work');
+	let active = $state(links[0].id);
 
 	onMount(() => {
 		if (variant !== 'home') return;

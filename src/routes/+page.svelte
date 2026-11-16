@@ -1,6 +1,8 @@
 <script>
 	import Sidebar from '$lib/components/Sidebar.svelte';
+	import Featured from '$lib/components/Featured.svelte';
 	import ProjectCard from '$lib/components/ProjectCard.svelte';
+	import { featured } from '$lib/data/featured.js';
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
 	import { reveal, fillBar } from '$lib/actions/reveal.js';
 	import { projects, categories } from '$lib/data/projects.js';
@@ -29,6 +31,13 @@
 	<Sidebar />
 
 	<main class="content">
+		{#if featured}
+			<section id={featured.id} class="section">
+				<h2 class="section-title">Current project</h2>
+				<Featured item={featured} />
+			</section>
+		{/if}
+
 		<section id="work" class="section">
 			<h2 class="section-title">Work</h2>
 
@@ -115,7 +124,11 @@
 			<h2 class="section-title">Contact</h2>
 
 			<div class="contact" use:reveal>
-				<p>Feel free to reach out, or take a look at more of my work.</p>
+				<p class="availability">Available for freelance work</p>
+				<p>
+					I take on web, desktop and game projects. Feel free to get in touch, or take a
+					look at more of my work.
+				</p>
 				<ul class="contact-links">
 					{#each social as item (item.label)}
 						<li><a href={item.url} target="_blank" rel="noopener">{item.label}</a></li>
@@ -268,6 +281,23 @@
 
 	.contact p {
 		margin: 0 0 1.25rem;
+	}
+
+	.availability {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin: 0 0 0.9rem;
+		font-weight: 600;
+		color: var(--accent);
+	}
+
+	.availability::before {
+		content: '';
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		background: var(--accent);
 	}
 
 	.contact-links {
