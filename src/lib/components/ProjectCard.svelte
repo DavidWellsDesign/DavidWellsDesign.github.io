@@ -156,7 +156,7 @@
 	.link {
 		font-size: 0.88rem;
 		font-weight: 600;
-		color: var(--accent);
+		color: var(--accent-ink);
 		text-decoration: none;
 	}
 

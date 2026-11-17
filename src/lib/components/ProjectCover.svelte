@@ -79,26 +79,16 @@
 	}
 
 	.monogram {
-		font-family:
-			system-ui,
-			-apple-system,
-			'Segoe UI',
-			Arial,
-			sans-serif;
+		font-family: var(--font-display);
 		font-size: 108px;
 		font-weight: 700;
-		fill: #fff;
+		fill: var(--on-accent);
 		opacity: 0.16;
 	}
 
 	.title {
-		font-family:
-			system-ui,
-			-apple-system,
-			'Segoe UI',
-			Arial,
-			sans-serif;
+		font-family: var(--font-display);
 		font-weight: 700;
-		fill: #fff;
+		fill: var(--on-accent);
 	}
 </style>

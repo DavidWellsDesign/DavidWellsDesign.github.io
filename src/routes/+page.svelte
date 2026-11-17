@@ -4,7 +4,7 @@
 	import ProjectCard from '$lib/components/ProjectCard.svelte';
 	import { featured } from '$lib/data/featured.js';
 	import ThemeSwitcher from '$lib/components/ThemeSwitcher.svelte';
-	import { reveal, fillBar } from '$lib/actions/reveal.js';
+	import { reveal } from '$lib/actions/reveal.js';
 	import { projects, categories } from '$lib/data/projects.js';
 	import { jobs, education, skills, social } from '$lib/data/resume.js';
 	import { site } from '$lib/data/site.js';
@@ -106,15 +106,14 @@
 			<h2 class="section-title">Skills</h2>
 
 			<div class="skills-grid">
-				{#each skills as skill, i (skill.name)}
-					<div class="skill" use:reveal={{ delay: i * 60 }}>
-						<div class="skill-head">
-							<span class="skill-name">{skill.name}</span>
-							<span class="skill-value">{skill.level}%</span>
-						</div>
-						<div class="skill-track">
-							<div class="skill-fill" use:fillBar={skill.level}></div>
-						</div>
+				{#each skills as group, i (group.group)}
+					<div class="skill-group" use:reveal={{ delay: i * 70 }}>
+						<h3>{group.group}</h3>
+						<ul>
+							{#each group.items as item (item)}
+								<li>{item}</li>
+							{/each}
+						</ul>
 					</div>
 				{/each}
 			</div>
@@ -168,13 +167,13 @@
 
 	.pill:hover {
 		border-color: var(--accent);
-		color: var(--accent);
+		color: var(--accent-ink);
 	}
 
 	.pill.active {
 		background: var(--accent);
 		border-color: var(--accent);
-		color: #fff;
+		color: var(--on-accent);
 	}
 
 	.project-grid {
@@ -222,7 +221,7 @@
 
 	.company {
 		font-weight: 600;
-		color: var(--accent);
+		color: var(--accent-ink);
 	}
 
 	.date {
@@ -242,41 +241,31 @@
 	.skills-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-		gap: 1.25rem 2rem;
+		gap: 1.75rem 2.5rem;
 	}
 
-	.skill-head {
+	.skill-group h3 {
+		margin: 0 0 0.7rem;
+		font-size: 0.95rem;
+		font-weight: 700;
+	}
+
+	.skill-group ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
 		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-		margin-bottom: 0.35rem;
+		flex-wrap: wrap;
+		gap: 0.45rem;
 	}
 
-	.skill-name {
-		font-weight: 600;
-		font-size: 0.92rem;
-	}
-
-	.skill-value {
-		font-size: 0.78rem;
-		color: var(--text-muted);
-	}
-
-	.skill-track {
-		height: 8px;
-		background: #e7eaec;
+	.skill-group li {
+		font-size: 0.85rem;
+		padding: 0.3rem 0.8rem;
 		border-radius: 999px;
-		overflow: hidden;
-	}
-
-	.skill-fill {
-		height: 100%;
-		width: 0;
-		background: var(--accent);
-		border-radius: 999px;
-		transition:
-			width 1.1s ease,
-			background 0.3s ease;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		color: var(--text);
 	}
 
 	.contact p {
@@ -289,7 +278,7 @@
 		gap: 0.5rem;
 		margin: 0 0 0.9rem;
 		font-weight: 600;
-		color: var(--accent);
+		color: var(--accent-ink);
 	}
 
 	.availability::before {
@@ -324,7 +313,7 @@
 
 	.contact-links a:hover {
 		border-color: var(--accent);
-		color: var(--accent);
+		color: var(--accent-ink);
 	}
 
 	.colophon {

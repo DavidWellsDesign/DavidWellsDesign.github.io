@@ -1,17 +1,62 @@
-/* Theme — the switcher overwrites these three on :root at runtime. */
+/* Theme — the switcher overwrites the accent values on :root at runtime. */
 :root {
 	--accent: #3498db;
 	--accent-2: #8e44ad;
 	--dark: #35424a;
+	--on-accent: #ffffff;
 
+	/* Accent used as text. Themes can override the light-mode value; dark
+	   mode lightens it below so every theme stays readable on dark surfaces. */
+	--accent-ink: var(--accent-ink-light, var(--accent));
+
+	--font-display: 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+
+	/* Light mode — the original palette */
+	color-scheme: light;
 	--bg: #f4f4f4;
+	--bg-alt: #f7f8f9;
 	--surface: #ffffff;
 	--text: #333333;
 	--text-muted: #7f8c8d;
 	--heading: #2c3e50;
 	--border: #e4e6e8;
+	--sidebar-bg: var(--accent);
+	--sidebar-ink: var(--on-accent);
 
 	--sidebar-width: 340px;
+}
+
+/* Dark mode: an explicit choice wins; otherwise follow the system setting.
+   The two blocks are identical on purpose — CSS can't share them. */
+:root[data-mode='dark'] {
+	color-scheme: dark;
+	--bg: #0f1216;
+	--bg-alt: #1b2027;
+	--surface: #161a20;
+	--text: #cdd3da;
+	--text-muted: #8a94a0;
+	--heading: #f0f3f6;
+	--border: #262c34;
+	--accent-ink: color-mix(in oklab, var(--accent) 72%, white);
+	--sidebar-bg: color-mix(in oklab, var(--accent) 34%, #0f1216);
+	--sidebar-ink: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-mode='light']) {
+		color-scheme: dark;
+		--bg: #0f1216;
+		--bg-alt: #1b2027;
+		--surface: #161a20;
+		--text: #cdd3da;
+		--text-muted: #8a94a0;
+		--heading: #f0f3f6;
+		--border: #262c34;
+		--accent-ink: color-mix(in oklab, var(--accent) 72%, white);
+		--sidebar-bg: color-mix(in oklab, var(--accent) 34%, #0f1216);
+		--sidebar-ink: #ffffff;
+	}
 }
 
 *,
@@ -26,27 +71,27 @@ html {
 
 body {
 	margin: 0;
-	font-family:
-		system-ui,
-		-apple-system,
-		'Segoe UI',
-		Arial,
-		sans-serif;
+	font-family: var(--font-body);
 	line-height: 1.65;
 	background-color: var(--bg);
 	color: var(--text);
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
 }
 
 h1,
 h2,
 h3,
 h4 {
+	font-family: var(--font-display);
 	color: var(--heading);
-	line-height: 1.25;
+	line-height: 1.2;
+	letter-spacing: -0.015em;
 }
 
 a {
-	color: var(--accent);
+	color: var(--accent-ink);
 }
 
 /* Layout shell — fixed sidebar, scrolling content */

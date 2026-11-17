@@ -53,7 +53,7 @@
 	.tagline {
 		margin: 0.3rem 0 1.1rem;
 		font-size: 1.02rem;
-		color: var(--accent);
+		color: var(--accent-ink);
 		font-weight: 600;
 	}
 
@@ -105,7 +105,7 @@
 		padding: 0.6rem 1.4rem;
 		border-radius: 999px;
 		background: var(--accent);
-		color: #fff;
+		color: var(--on-accent);
 		text-decoration: none;
 		font-size: 0.92rem;
 		font-weight: 600;

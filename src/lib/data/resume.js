@@ -1,5 +1,16 @@
 export const jobs = [
 	{
+		role: 'Independent Developer',
+		company: 'Working holiday, Australia',
+		date: 'January 2026 - Present',
+		points: [
+			'Travelling in Australia on a working holiday while building my own projects full-time.',
+			'Designing and developing Throughline, a pair of native macOS desktop tools for game designers, from first prototype through to pre-order launch.',
+			'Built and released Destination: Earth, a puzzle platformer, for the Game Makers Toolkit game jam 2026.',
+			'Available for freelance web, desktop and game development work.'
+		]
+	},
+	{
 		role: 'Visualfiles Developer',
 		company: 'Judge & Priestley',
 		date: 'February 2025 - January 2026',
@@ -49,13 +60,13 @@ export const education = [
 	}
 ];
 
+// Grouped rather than scored — percentages invite the question "60% of what?".
+// Group order and item order are both display order.
 export const skills = [
-	{ name: 'Visualfiles', level: 95 },
-	{ name: 'SQL', level: 80 },
-	{ name: 'Microsoft Office', level: 90 },
-	{ name: 'Agile', level: 75 },
-	{ name: 'Python', level: 60 },
-	{ name: 'Microsoft Azure', level: 60 }
+	{ group: 'Languages', items: ['C#', 'JavaScript', 'Python', 'SQL', 'GDScript'] },
+	{ group: 'Engines & frameworks', items: ['Unity', 'Godot', 'React', 'Svelte'] },
+	{ group: 'Tools & platforms', items: ['macOS', 'WordPress', 'Blender', 'Microsoft Azure'] },
+	{ group: 'Case management', items: ['Visualfiles', 'SSRS', 'Agile'] }
 ];
 
 export const social = [

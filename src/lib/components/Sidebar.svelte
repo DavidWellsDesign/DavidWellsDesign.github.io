@@ -97,16 +97,33 @@
 </aside>
 
 <style>
+	/* Solid theme colour with a faint film grain. --sidebar-bg and
+	   --sidebar-ink switch between light and dark mode in app.css. */
 	.sidebar {
-		background: linear-gradient(160deg, var(--accent), var(--accent-2));
-		color: #fff;
+		background-color: var(--sidebar-bg);
+		color: var(--sidebar-ink);
 		position: sticky;
 		top: 0;
 		height: 100vh;
-		transition: background 0.4s ease;
+		isolation: isolate;
+		transition:
+			background-color 0.4s ease,
+			color 0.4s ease;
+	}
+
+	.sidebar::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		pointer-events: none;
+		opacity: 0.16;
+		mix-blend-mode: overlay;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 	}
 
 	.inner {
+		position: relative;
 		height: 100%;
 		padding: 3.5rem 2.5rem;
 		display: flex;
@@ -117,12 +134,13 @@
 
 	h1,
 	.name {
-		color: #fff;
-		font-size: 2.2rem;
-		font-weight: 700;
+		color: inherit;
+		font-family: var(--font-display);
+		font-size: 2.5rem;
+		font-weight: 800;
 		margin: 0;
-		letter-spacing: -0.02em;
-		line-height: 1.25;
+		letter-spacing: -0.035em;
+		line-height: 1.05;
 	}
 
 	.name a {
@@ -135,8 +153,10 @@
 	}
 
 	.role {
-		margin: 0.25rem 0 0;
-		font-size: 1.05rem;
+		margin: 0.5rem 0 0;
+		font-family: var(--font-display);
+		font-size: 1.1rem;
+		font-weight: 600;
 		opacity: 0.9;
 	}
 
@@ -160,7 +180,7 @@
 		align-items: center;
 		gap: 0.75rem;
 		padding: 0.4rem 0;
-		color: #fff;
+		color: inherit;
 		text-decoration: none;
 		font-size: 0.82rem;
 		letter-spacing: 0.1em;
@@ -199,11 +219,11 @@
 	}
 
 	.social a {
-		color: #fff;
+		color: inherit;
 		font-size: 0.85rem;
 		opacity: 0.75;
 		text-decoration: none;
-		border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+		border-bottom: 1px solid color-mix(in srgb, currentColor 40%, transparent);
 		padding-bottom: 2px;
 		transition: opacity 0.2s ease;
 	}

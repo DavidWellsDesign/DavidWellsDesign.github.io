@@ -34,33 +34,3 @@ export function reveal(node, options = {}) {
 		}
 	};
 }
-
-/**
- * Grows a skill bar to its target width when it scrolls into view.
- * Usage: <div use:fillBar={85}>
- */
-export function fillBar(node, level) {
-	if (reducedMotion || typeof IntersectionObserver === 'undefined') {
-		node.style.width = `${level}%`;
-		return {};
-	}
-
-	const observer = new IntersectionObserver(
-		(entries) => {
-			for (const entry of entries) {
-				if (!entry.isIntersecting) continue;
-				entry.target.style.width = `${level}%`;
-				observer.unobserve(entry.target);
-			}
-		},
-		{ threshold: 0.4 }
-	);
-
-	observer.observe(node);
-
-	return {
-		destroy() {
-			observer.disconnect();
-		}
-	};
-}

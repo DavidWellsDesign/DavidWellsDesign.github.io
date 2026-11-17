@@ -1,20 +1,38 @@
 <script>
 	import { onMount } from 'svelte';
-	import { themes, defaultTheme, applyTheme } from '$lib/data/themes.js';
+	import {
+		themes,
+		defaultTheme,
+		applyTheme,
+		currentMode,
+		applyMode
+	} from '$lib/data/themes.js';
 
 	let open = $state(false);
 	let current = $state(defaultTheme);
+	let mode = $state('light');
 
 	onMount(() => {
 		current = localStorage.getItem('portfolio-theme') || defaultTheme;
 		applyTheme(current);
+		mode = currentMode();
+
+		// Follow system changes, unless the visitor has picked a mode themselves.
+		const media = window.matchMedia('(prefers-color-scheme: dark)');
+		const onSystemChange = () => {
+			if (!document.documentElement.dataset.mode) mode = currentMode();
+		};
+		media.addEventListener('change', onSystemChange);
 
 		const onDocumentClick = (event) => {
 			if (!event.target.closest('.switcher')) open = false;
 		};
-
 		document.addEventListener('click', onDocumentClick);
-		return () => document.removeEventListener('click', onDocumentClick);
+
+		return () => {
+			media.removeEventListener('change', onSystemChange);
+			document.removeEventListener('click', onDocumentClick);
+		};
 	});
 
 	function select(id) {
@@ -22,11 +40,52 @@
 		applyTheme(id);
 		localStorage.setItem('portfolio-theme', id);
 	}
+
+	function toggleMode() {
+		mode = mode === 'dark' ? 'light' : 'dark';
+		applyMode(mode);
+	}
 </script>
 
 <div class="switcher" class:open>
+	<div class="panel" role="group" aria-label="Theme colours">
+		{#each themes as theme (theme.id)}
+			<button
+				class="swatch"
+				class:active={current === theme.id}
+				style="background: {theme.accent};"
+				onclick={() => select(theme.id)}
+				aria-label={theme.label}
+				aria-pressed={current === theme.id}
+				title={theme.label}
+			></button>
+		{/each}
+	</div>
+
 	<button
-		class="toggle"
+		class="fab secondary"
+		onclick={toggleMode}
+		aria-label={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+		title={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+	>
+		{#if mode === 'dark'}
+			<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+				<circle cx="12" cy="12" r="4.5" fill="currentColor" />
+				<g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+					<path
+						d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"
+					/>
+				</g>
+			</svg>
+		{:else}
+			<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+				<path fill="currentColor" d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1Z" />
+			</svg>
+		{/if}
+	</button>
+
+	<button
+		class="fab"
 		onclick={() => (open = !open)}
 		aria-expanded={open}
 		aria-label="Change theme colour"
@@ -39,20 +98,6 @@
 			/>
 		</svg>
 	</button>
-
-	<div class="panel" role="group" aria-label="Theme colours">
-		{#each themes as theme (theme.id)}
-			<button
-				class="swatch"
-				class:active={current === theme.id}
-				style="background: linear-gradient(135deg, {theme.accent}, {theme.accent2});"
-				onclick={() => select(theme.id)}
-				aria-label={theme.label}
-				aria-pressed={current === theme.id}
-				title={theme.label}
-			></button>
-		{/each}
-	</div>
 </div>
 
 <style>
@@ -61,40 +106,54 @@
 		right: 24px;
 		bottom: 24px;
 		z-index: 50;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.6rem;
 	}
 
-	.toggle {
+	.fab {
 		width: 52px;
 		height: 52px;
 		border-radius: 50%;
 		border: none;
 		background: var(--accent);
-		color: #fff;
+		color: var(--on-accent);
 		display: grid;
 		place-items: center;
 		cursor: pointer;
 		box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 		transition:
 			transform 0.2s ease,
-			background 0.3s ease;
+			background 0.3s ease,
+			color 0.3s ease;
 	}
 
-	.toggle:hover {
+	.fab.secondary {
+		width: 42px;
+		height: 42px;
+		background: var(--surface);
+		color: var(--heading);
+		border: 1px solid var(--border);
+	}
+
+	.fab:hover {
 		transform: scale(1.08);
 	}
 
 	.panel {
 		position: absolute;
-		right: 0;
-		bottom: 66px;
+		right: 64px;
+		bottom: 0;
 		display: flex;
 		gap: 0.6rem;
 		padding: 0.75rem;
 		background: var(--surface);
+		border: 1px solid var(--border);
 		border-radius: 12px;
 		box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
 		opacity: 0;
-		transform: translateY(10px);
+		transform: translateX(10px);
 		pointer-events: none;
 		transition:
 			opacity 0.2s ease,
@@ -103,18 +162,18 @@
 
 	.switcher.open .panel {
 		opacity: 1;
-		transform: translateY(0);
+		transform: translateX(0);
 		pointer-events: auto;
 	}
 
 	.swatch {
-		width: 32px;
-		height: 32px;
+		width: 30px;
+		height: 30px;
 		border-radius: 50%;
 		padding: 0;
 		cursor: pointer;
-		border: 2px solid #fff;
-		box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+		border: 2px solid var(--surface);
+		box-shadow: 0 0 0 1px var(--border);
 		transition: transform 0.15s ease;
 	}
 
@@ -123,6 +182,6 @@
 	}
 
 	.swatch.active {
-		box-shadow: 0 0 0 2px var(--dark);
+		box-shadow: 0 0 0 2px var(--heading);
 	}
 </style>

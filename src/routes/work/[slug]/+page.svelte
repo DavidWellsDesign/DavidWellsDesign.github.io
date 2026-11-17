@@ -122,7 +122,7 @@
 		border: 1px dashed var(--accent);
 		border-radius: 8px;
 		font-size: 0.85rem;
-		color: var(--accent);
+		color: var(--accent-ink);
 	}
 
 	.back {
@@ -133,7 +133,7 @@
 	}
 
 	.back:hover {
-		color: var(--accent);
+		color: var(--accent-ink);
 	}
 
 	.back.bottom {
@@ -243,7 +243,7 @@
 		padding: 0.55rem 1.35rem;
 		border-radius: 999px;
 		background: var(--accent);
-		color: #fff;
+		color: var(--on-accent);
 		text-decoration: none;
 		font-size: 0.9rem;
 		transition: filter 0.2s ease;

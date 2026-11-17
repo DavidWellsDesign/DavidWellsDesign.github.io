@@ -4,9 +4,16 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400..700&display=swap"
+		/>
 		<script>
-			// Applies the saved theme before first paint so the page never flashes
-			// the default accent. Kept in sync with src/lib/data/themes.js.
+			// Applies the saved theme and light/dark mode before first paint, so the
+			// page never flashes the defaults. Kept in sync with src/lib/data/themes.js.
+			// Values: [accent, accent2, dark, onAccent, lightModeInk]
 			(function () {
 				var themes = {
 					ocean: ['#3498db', '#8e44ad', '#35424a'],
@@ -14,15 +21,21 @@
 					sunset: ['#e67e22', '#e74c3c', '#4a2c2a'],
 					rose: ['#e84393', '#6c5ce7', '#3a2e44'],
 					slate: ['#4a5568', '#718096', '#1a202c'],
-					yellow: ['#fcba03', '#e38902', '#1a202c']
+					yellow: ['#fcba03', '#e38902', '#1a202c', '#1a202c', '#9a6b00']
 				};
 				try {
+					var root = document.documentElement;
+					var mode = localStorage.getItem('portfolio-mode');
+					if (mode === 'dark' || mode === 'light') root.dataset.mode = mode;
+
 					var t = themes[localStorage.getItem('portfolio-theme')];
 					if (!t) return;
-					var s = document.documentElement.style;
+					var s = root.style;
 					s.setProperty('--accent', t[0]);
 					s.setProperty('--accent-2', t[1]);
 					s.setProperty('--dark', t[2]);
+					s.setProperty('--on-accent', t[3] || '#ffffff');
+					s.setProperty('--accent-ink-light', t[4] || t[0]);
 				} catch (e) {}
 			})();
 		</script>
